@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+</head>
+
+<body>
+    <button onclick="login()">Login</button>
+    username<input id="username">
+    password<input id="password">
+
+    <button onclick="">Test - protected</button>
+    <script>
+        const MY_SERVER ="http://127.0.0.1:5000"
+        const login = async () => {
+            res = await axios.post(`${MY_SERVER}/login`, { username: username.value, password: password.value }).then( x => protected())
+            console.log(res.data);
+            localStorage.setItem("access_token", res.data.access_token)
+        }
+
+
+        const protected = async () => {
+            token = localStorage.getItem("access_token")
+            axios.get(`${MY_SERVER}/protected`, {
+                headers: {
+                    Authorization: `Bearer ${token}` // Include the token in the Authorization header
+                }
+            }).then(res => console.log(res.data))
+
+            console.log("success login - need 2 navigate");
+            window.location.href ="members.html"
+        }
+
+
+    </script>
+</body>
+
+</html>

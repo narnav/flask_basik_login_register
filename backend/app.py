@@ -2,9 +2,10 @@ from flask import Flask, jsonify, request
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_cors import CORS
 
 app = Flask(__name__)
-
+CORS(app)
 # Configuration
 app.config["JWT_SECRET_KEY"] = "your_jwt_secret_key"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///users.db"
@@ -65,6 +66,10 @@ def login():
 @jwt_required()
 def protected():
     return jsonify({"msg": "Access granted!"}), 200
+
+@app.route("/", methods=["GET"])
+def home():
+    return "welcome", 200
 
 if __name__ == "__main__":
     app.run(debug=True)
